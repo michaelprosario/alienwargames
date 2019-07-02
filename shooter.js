@@ -9,16 +9,17 @@ var config = {
     }
 };
 
-var player;
+var ship;
 var cursors;
 var game = new Phaser.Game(config);
 
 function preload() {
-    // let's preload stuff here...
+    this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip1_blue.png');
 }
 
 function create() {
     cursors = this.input.keyboard.createCursorKeys();
+    ship = this.add.sprite(400, 550, 'ship');
 }
 
 function update() {
