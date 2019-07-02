@@ -11,6 +11,8 @@ var config = {
     }
 };
 
+var game = new Phaser.Game(config);
+
 //================================================================================
 
 class Ship {
@@ -105,7 +107,6 @@ class ShipLaser {
 //================================================================================
 
 var cursors;
-var game = new Phaser.Game(config);
 var myShip;
 var shipLaser;
 
