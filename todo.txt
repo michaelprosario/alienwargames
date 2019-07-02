@@ -1,0 +1,3 @@
+- create a space ship
+- enable the user to move the space ship around
+- enable the space ship to shoot stuff
