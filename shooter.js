@@ -31,18 +31,26 @@ var Ship = function(sprite) {
     }    
 }
 
+var ShipLaser = function(sprite){
+
+}
+
 var cursors;
 var game = new Phaser.Game(config);
 var myShip;
+var shipLaser;
 
 function preload() {
     this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip1_blue.png');
+    this.load.image('laser','assets/SpaceShooterRedux/PNG/Lasers/laserBlue01.png')
 }
 
 function create() {
     cursors = this.input.keyboard.createCursorKeys();
-    sprite = this.add.sprite(400, 550, 'ship');
-    myShip = new Ship(sprite);
+    var shipSprite = this.add.sprite(400, 550, 'ship');
+    var shipLaserSprite = this.add.sprite(400, 300, 'laser');
+    myShip = new Ship(shipSprite);
+    shipLaser = new ShipLaser(shipLaserSprite);
 }
 
 function update() {
