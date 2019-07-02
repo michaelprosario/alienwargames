@@ -13,87 +13,91 @@ var config = {
 
 //================================================================================
 
-var Ship = function(scene) {
-    this.sprite = scene.add.sprite(400, 550, 'ship');
-    this.scene = scene;
-    this.deltaX = 5;
-    this.deltaY = 5;
-    this.lasers = new Array();
-    this.lastShot = new Date().getTime();
-    this.shotFrequency = 250;
+class Ship {
 
-    this.moveLeft = function(){
-        if(this.sprite.x > 0){
+    constructor(scene){
+        this.sprite = scene.add.sprite(400, 550, 'ship');
+        this.scene = scene;
+        this.deltaX = 5;
+        this.deltaY = 5;
+        this.lasers = new Array();
+        this.lastShot = new Date().getTime();
+        this.shotFrequency = 250;
+    }
+
+    moveLeft() {
+        if (this.sprite.x > 0) {
             this.sprite.x -= this.deltaX;
         }
     }
 
-    this.moveRight = function(){
-        if(this.sprite.x < SCREEN_WIDTH) {
+    moveRight() {
+        if (this.sprite.x < SCREEN_WIDTH) {
             this.sprite.x += this.deltaX;
         }
     }
 
-    this.moveUp = function(){
-        if(this.sprite.y > 0){
+    moveUp() {
+        if (this.sprite.y > 0) {
             this.sprite.y -= this.deltaY;
-        }        
+        }
     }
 
-    this.moveDown = function(){
+    moveDown() {
 
-        if(this.sprite.y < SCREEN_HEIGHT) {
+        if (this.sprite.y < SCREEN_HEIGHT) {
             this.sprite.y += this.deltaY;
         }
-    }    
+    }
 
-    this.fireLasers = function() {
+    fireLasers() {
         var currentTime = new Date().getTime();
-        if(currentTime - this.lastShot > this.shotFrequency){
-            var shipLaser = new ShipLaser(this.scene, this.sprite.x, this.sprite.y );
-            this.lasers.push(shipLaser);   
-            this.lastShot = currentTime; 
+        if (currentTime - this.lastShot > this.shotFrequency) {
+            var shipLaser = new ShipLaser(this.scene, this.sprite.x, this.sprite.y);
+            this.lasers.push(shipLaser);
+            this.lastShot = currentTime;
         }
     }
 
-    this.update = function(){
-        var i=0;
-        var j=0;
+    update() {
+        var i = 0;
+        var j = 0;
         var lasersToRemove = new Array();
 
-        for(i=0; i<this.lasers.length; i++){
+        for (i = 0; i < this.lasers.length; i++) {
             this.lasers[i].update();
 
-            if(this.lasers[i].getY() <= 0){
+            if (this.lasers[i].getY() <= 0) {
                 lasersToRemove.push(this.lasers[i]);
             }
         }
 
-        for(j=0; j<lasersToRemove.length; j++){
+        for (j = 0; j < lasersToRemove.length; j++) {
             var laserIndex = this.lasers.indexOf(lasersToRemove[j]);
-            this.lasers.splice(laserIndex,1);
+            this.lasers.splice(laserIndex, 1);
             lasersToRemove[j].destroy();
         }
-
-        
     }
 }
 
 //================================================================================
 
-var ShipLaser = function(scene, x, y){
+class ShipLaser {
 
-    this.sprite = scene.add.sprite(x, y, 'laser');
-    this.speed = 10;
-    this.update = function(){
+    constructor(scene, x, y) {
+        this.sprite = scene.add.sprite(x, y, 'laser');
+        this.speed = 10;    
+    }
+
+    update() {
         this.sprite.y -= this.speed;
     }
 
-    this.destroy = function(){
+    destroy() {
         this.sprite.destroy(true);
     }
 
-    this.getY = function(){
+    getY() {
         return this.sprite.y;
     }
 }
@@ -107,7 +111,7 @@ var shipLaser;
 
 function preload() {
     this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip1_blue.png');
-    this.load.image('laser','assets/SpaceShooterRedux/PNG/Lasers/laserBlue01.png')
+    this.load.image('laser', 'assets/SpaceShooterRedux/PNG/Lasers/laserBlue01.png')
 }
 
 function create() {
@@ -133,13 +137,10 @@ function update() {
         myShip.moveDown();
     }
 
-    if(cursors.space.isDown){
+    if (cursors.space.isDown) {
         myShip.fireLasers();
     }
 
     myShip.update();
-
-    
-
 }
 
