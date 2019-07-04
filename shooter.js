@@ -3,21 +3,14 @@ var SCREEN_HEIGHT = 600;
 var config = {
     type: Phaser.AUTO,
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
+    height: SCREEN_HEIGHT
 };
-
-var game = new Phaser.Game(config);
 
 //================================================================================
 
 class Ship {
 
-    constructor(scene){
+    constructor(scene) {
         this.sprite = scene.add.sprite(400, 550, 'ship');
         this.scene = scene;
         this.deltaX = 5;
@@ -88,7 +81,7 @@ class ShipLaser {
 
     constructor(scene, x, y) {
         this.sprite = scene.add.sprite(x, y, 'laser');
-        this.speed = 10;    
+        this.speed = 10;
     }
 
     update() {
@@ -106,42 +99,46 @@ class ShipLaser {
 
 //================================================================================
 
-var cursors;
-var myShip;
-var shipLaser;
+class Scene1 extends Phaser.Scene {
 
-function preload() {
-    this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip1_blue.png');
-    this.load.image('laser', 'assets/SpaceShooterRedux/PNG/Lasers/laserBlue01.png')
+    constructor(config) {
+        super(config);
+    }
+
+    preload() {
+        this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip1_blue.png');
+        this.load.image('laser', 'assets/SpaceShooterRedux/PNG/Lasers/laserBlue01.png')
+    }
+
+    create() {
+        this.cursors = this.input.keyboard.createCursorKeys();
+        this.myShip = new Ship(this);
+    }
+
+    update() {
+        if (this.cursors.left.isDown) {
+            this.myShip.moveLeft();
+        }
+
+        if (this.cursors.right.isDown) {
+            this.myShip.moveRight();
+        }
+
+        if (this.cursors.up.isDown) {
+            this.myShip.moveUp();
+        }
+
+        if (this.cursors.down.isDown) {
+            this.myShip.moveDown();
+        }
+
+        if (this.cursors.space.isDown) {
+            this.myShip.fireLasers();
+        }
+
+        this.myShip.update();
+    }
 }
 
-function create() {
-    cursors = this.input.keyboard.createCursorKeys();
-    var scene = this;
-    myShip = new Ship(scene);
-}
-
-function update() {
-    if (cursors.left.isDown) {
-        myShip.moveLeft();
-    }
-
-    if (cursors.right.isDown) {
-        myShip.moveRight();
-    }
-
-    if (cursors.up.isDown) {
-        myShip.moveUp();
-    }
-
-    if (cursors.down.isDown) {
-        myShip.moveDown();
-    }
-
-    if (cursors.space.isDown) {
-        myShip.fireLasers();
-    }
-
-    myShip.update();
-}
-
+var game = new Phaser.Game(config);
+game.scene.add('scene1', Scene1, true, { x: 400, y: 300 });
