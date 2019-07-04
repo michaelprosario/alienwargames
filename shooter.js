@@ -3,7 +3,10 @@ var SCREEN_HEIGHT = 600;
 var config = {
     type: Phaser.AUTO,
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT
+    height: SCREEN_HEIGHT,
+    physics: {
+        default: 'arcade'
+    }
 };
 
 //================================================================================
@@ -80,8 +83,14 @@ class Ship {
 class ShipLaser {
 
     constructor(scene, x, y) {
-        this.sprite = scene.add.sprite(x, y, 'laser');
         this.speed = 10;
+        this.sprite = scene.physics.add.image(x, y, 'laser')
+        scene.physics.add.collider(this.sprite, scene.enemy.sprite, this.handleHit, null, this);
+    }
+
+    handleHit(laserSprite, enemySprite){
+        //console.log("enemy hit");
+        enemySprite.destroy(true);
     }
 
     update() {
@@ -99,6 +108,24 @@ class ShipLaser {
 
 //================================================================================
 
+class Enemy1 {
+    constructor(scene, x, y) {
+        //this.sprite = scene.add.sprite(x, y, 'enemy1');
+        this.sprite = scene.physics.add.image(x, y, 'enemy1')
+    }
+
+    update() {
+        // peter - this where we will move the guy
+    }
+
+    destroy() {
+        this.sprite.destroy(true);
+    }
+
+}
+
+//================================================================================
+
 class Scene1 extends Phaser.Scene {
 
     constructor(config) {
@@ -107,12 +134,14 @@ class Scene1 extends Phaser.Scene {
 
     preload() {
         this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip1_blue.png');
-        this.load.image('laser', 'assets/SpaceShooterRedux/PNG/Lasers/laserBlue01.png')
+        this.load.image('laser', 'assets/SpaceShooterRedux/PNG/Lasers/laserBlue01.png');
+        this.load.image('enemy1', 'assets/SpaceShooterRedux/PNG/Enemies/enemyBlack4.png');
     }
 
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.myShip = new Ship(this);
+        this.enemy = new Enemy1(this,400, 300);
     }
 
     update() {
