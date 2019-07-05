@@ -85,12 +85,12 @@ class ShipLaser {
     constructor(scene, x, y) {
         this.speed = 10;
         this.sprite = scene.physics.add.image(x, y, 'laser')
-        scene.physics.add.collider(this.sprite, scene.enemy.sprite, this.handleHit, null, this);
+        scene.physics.add.collider(this.sprite, scene.enemies, this.handleHit, null, this);
     }
 
     handleHit(laserSprite, enemySprite){
-        //console.log("enemy hit");
         enemySprite.destroy(true);
+        laserSprite.destroy(true);
     }
 
     update() {
@@ -110,7 +110,6 @@ class ShipLaser {
 
 class Enemy1 {
     constructor(scene, x, y) {
-        //this.sprite = scene.add.sprite(x, y, 'enemy1');
         this.sprite = scene.physics.add.image(x, y, 'enemy1')
     }
 
@@ -141,7 +140,17 @@ class Scene1 extends Phaser.Scene {
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.myShip = new Ship(this);
-        this.enemy = new Enemy1(this,400, 300);
+        this.enemies = this.physics.add.group();
+
+        let k=0;
+        for(k=0;  k<21; k++){
+            let x = Math.random() * 800;
+            let y = Math.random() * 400;
+
+            this.enemy = new Enemy1(this,x, y);
+            this.enemies.add(this.enemy.sprite);
+        }
+
     }
 
     update() {
