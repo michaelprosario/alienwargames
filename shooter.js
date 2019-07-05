@@ -110,17 +110,61 @@ class ShipLaser {
 
 class Enemy1 {
     constructor(scene, x, y) {
-        this.sprite = scene.physics.add.image(x, y, 'enemy1')
+        this.sprite = scene.physics.add.image(x, y, 'enemy1');
+        this.sprite.gameObject = this;
+        this.deltaX = 3;
+        this.deltaY = 3;
     }
 
     update() {
-        // peter - this where we will move the guy
+        
+        let k = Math.random() * 3;
+        k = Math.round(k);
+
+        if(k==0)
+        {
+            this.moveUp();
+        }
+        else if(k==1){
+            this.moveDown();
+        }
+        else if(k==2){
+            this.moveLeft();
+        }
+        else if(k==3){
+            this.moveRight();
+        }
+
     }
 
     destroy() {
         this.sprite.destroy(true);
     }
 
+    moveLeft() {
+        if (this.sprite.x > 0) {
+            this.sprite.x -= this.deltaX;
+        }
+    }
+
+    moveRight() {
+        if (this.sprite.x < SCREEN_WIDTH) {
+            this.sprite.x += this.deltaX;
+        }
+    }
+
+    moveUp() {
+        if (this.sprite.y > 0) {
+            this.sprite.y -= this.deltaY;
+        }
+    }
+
+    moveDown() {
+
+        if (this.sprite.y < SCREEN_HEIGHT) {
+            this.sprite.y += this.deltaY;
+        }
+    }
 }
 
 //================================================================================
@@ -141,6 +185,7 @@ class Scene1 extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.myShip = new Ship(this);
         this.enemies = this.physics.add.group();
+        this.enemies2 = new Array();
 
         let k=0;
         for(k=0;  k<21; k++){
@@ -149,6 +194,7 @@ class Scene1 extends Phaser.Scene {
 
             this.enemy = new Enemy1(this,x, y);
             this.enemies.add(this.enemy.sprite);
+            this.enemies2.push(this.enemy);
         }
 
     }
@@ -175,6 +221,14 @@ class Scene1 extends Phaser.Scene {
         }
 
         this.myShip.update();
+
+        let j=0;
+        for(j=0;  j<this.enemies2.length; j++){
+            let enemy = this.enemies2[j];
+            enemy.update();
+        }
+        
+
     }
 }
 
