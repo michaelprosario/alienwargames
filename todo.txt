@@ -1,3 +1,6 @@
-- create a space ship
-- enable the user to move the space ship around
-- enable the space ship to shoot stuff
+- clean up the sprites
+- need to clean up group management
+- need to create way for aliens to shoot 
+- need boss level thing
+- there should be many waves of alien attacks
+

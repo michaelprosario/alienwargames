@@ -125,16 +125,12 @@ class Enemy1 {
         {
             this.moveUp();
         }
-        else if(k==1){
-            this.moveDown();
-        }
         else if(k==2){
             this.moveLeft();
         }
         else if(k==3){
             this.moveRight();
         }
-
     }
 
     destroy() {
@@ -176,9 +172,9 @@ class Scene1 extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip1_blue.png');
+        this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip1_orange.png');
         this.load.image('laser', 'assets/SpaceShooterRedux/PNG/Lasers/laserBlue01.png');
-        this.load.image('enemy1', 'assets/SpaceShooterRedux/PNG/Enemies/enemyBlack4.png');
+        this.load.image('enemy1', 'assets/SpaceShooterRedux/PNG/Enemies/enemyBlack3.png');
     }
 
     create() {
