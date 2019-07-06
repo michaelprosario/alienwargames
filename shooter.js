@@ -11,10 +11,14 @@ var config = {
 
 //================================================================================
 
-class Ship {
+class Ship extends Phaser.GameObjects.Sprite  {
 
-    constructor(scene) {
-        this.sprite = scene.add.sprite(400, 550, 'ship');
+    constructor(scene, x , y) {
+        //this.sprite = scene.add.sprite(400, 550, 'ship');
+        super(scene, x, y);
+        this.setTexture('ship');
+        this.setPosition(x, y);
+
         this.scene = scene;
         this.deltaX = 5;
         this.deltaY = 5;
@@ -24,40 +28,42 @@ class Ship {
     }
 
     moveLeft() {
-        if (this.sprite.x > 0) {
-            this.sprite.x -= this.deltaX;
+        if (this.x > 0) {
+            this.x -= this.deltaX;
         }
     }
 
     moveRight() {
-        if (this.sprite.x < SCREEN_WIDTH) {
-            this.sprite.x += this.deltaX;
+        if (this.x < SCREEN_WIDTH) {
+            this.x += this.deltaX;
         }
     }
 
     moveUp() {
-        if (this.sprite.y > 0) {
-            this.sprite.y -= this.deltaY;
+        if (this.y > 0) {
+            this.y -= this.deltaY;
         }
     }
 
     moveDown() {
 
-        if (this.sprite.y < SCREEN_HEIGHT) {
-            this.sprite.y += this.deltaY;
+        if (this.y < SCREEN_HEIGHT) {
+            this.y += this.deltaY;
         }
     }
 
     fireLasers() {
         var currentTime = new Date().getTime();
         if (currentTime - this.lastShot > this.shotFrequency) {
-            var shipLaser = new ShipLaser(this.scene, this.sprite.x, this.sprite.y);
+            var shipLaser = new ShipLaser(this.scene, this.x, this.y);
             this.lasers.push(shipLaser);
             this.lastShot = currentTime;
         }
     }
 
-    update() {
+    preUpdate(time, delta) {
+        super.preUpdate(time, delta);
+
         var i = 0;
         var j = 0;
         var lasersToRemove = new Array();
@@ -118,7 +124,7 @@ class Enemy1 {
 
     update() {
         
-        let k = Math.random() * 3;
+        let k = Math.random() * 4;
         k = Math.round(k);
 
         if(k==0)
@@ -179,7 +185,8 @@ class Scene1 extends Phaser.Scene {
 
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.myShip = new Ship(this);
+        this.myShip = new Ship(this, 400, 500);
+        this.add.existing(this.myShip);
         this.enemies = this.physics.add.group();
         this.enemies2 = new Array();
 
