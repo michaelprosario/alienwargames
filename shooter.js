@@ -88,7 +88,7 @@ class ShipLaser {
         scene.physics.add.collider(this.sprite, scene.enemies, this.handleHit, null, this);
     }
 
-    handleHit(laserSprite, enemySprite){
+    handleHit(laserSprite, enemySprite) {
         enemySprite.destroy(true);
         laserSprite.destroy(true);
     }
@@ -117,18 +117,17 @@ class Enemy1 {
     }
 
     update() {
-        
-        let k = Math.random() * 3;
+
+        let k = Math.random() * 4;
         k = Math.round(k);
 
-        if(k==0)
-        {
-            this.moveUp();
+        if (k == 0) {
+            //this.moveUp();
         }
-        else if(k==2){
+        else if (k == 2) {
             this.moveLeft();
         }
-        else if(k==3){
+        else if (k == 3) {
             this.moveRight();
         }
     }
@@ -183,12 +182,12 @@ class Scene1 extends Phaser.Scene {
         this.enemies = this.physics.add.group();
         this.enemies2 = new Array();
 
-        let k=0;
-        for(k=0;  k<21; k++){
+        let k = 0;
+        for (k = 0; k < 21; k++) {
             let x = Math.random() * 800;
             let y = Math.random() * 400;
 
-            this.enemy = new Enemy1(this,x, y);
+            this.enemy = new Enemy1(this, x, y);
             this.enemies.add(this.enemy.sprite);
             this.enemies2.push(this.enemy);
         }
@@ -218,12 +217,12 @@ class Scene1 extends Phaser.Scene {
 
         this.myShip.update();
 
-        let j=0;
-        for(j=0;  j<this.enemies2.length; j++){
+        let j = 0;
+        for (j = 0; j < this.enemies2.length; j++) {
             let enemy = this.enemies2[j];
             enemy.update();
         }
-        
+
 
     }
 }
