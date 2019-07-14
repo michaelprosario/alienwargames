@@ -14,7 +14,6 @@ var config = {
 class Ship extends Phaser.GameObjects.Sprite  {
 
     constructor(scene, x , y) {
-        //this.sprite = scene.add.sprite(400, 550, 'ship');
         super(scene, x, y);
         this.setTexture('ship');
         this.setPosition(x, y);
@@ -56,9 +55,10 @@ class Ship extends Phaser.GameObjects.Sprite  {
         var currentTime = new Date().getTime();
         if (currentTime - this.lastShot > this.shotFrequency) {
             var shipLaser = new ShipLaser(this.scene, this.x, this.y);
+            this.scene.add.existing(shipLaser);
             this.lasers.push(shipLaser);
             this.lastShot = currentTime;
-        }
+        } 
     }
 
     preUpdate(time, delta) {
@@ -66,12 +66,12 @@ class Ship extends Phaser.GameObjects.Sprite  {
 
         var i = 0;
         var j = 0;
-        var lasersToRemove = new Array();
+        var lasersToRemove = new Array(); 
 
         for (i = 0; i < this.lasers.length; i++) {
             this.lasers[i].update();
 
-            if (this.lasers[i].getY() <= 0) {
+            if (this.lasers[i].y <= 0) {
                 lasersToRemove.push(this.lasers[i]);
             }
         }
@@ -86,12 +86,15 @@ class Ship extends Phaser.GameObjects.Sprite  {
 
 //================================================================================
 
-class ShipLaser {
+class ShipLaser extends Phaser.GameObjects.Sprite {
 
     constructor(scene, x, y) {
+        super(scene, x, y);
+        this.setTexture('laser');
+        this.setPosition(x, y);
         this.speed = 10;
-        this.sprite = scene.physics.add.image(x, y, 'laser')
-        scene.physics.add.collider(this.sprite, scene.enemies, this.handleHit, null, this);
+        this.scene = scene;
+        scene.physics.add.collider(this, scene.enemies, this.handleHit, null, this);
     }
 
     handleHit(laserSprite, enemySprite) {
@@ -99,25 +102,22 @@ class ShipLaser {
         laserSprite.destroy(true);
     }
 
-    update() {
-        this.sprite.y -= this.speed;
-    }
-
-    destroy() {
-        this.sprite.destroy(true);
-    }
-
-    getY() {
-        return this.sprite.y;
+    preUpdate(time, delta) {
+        if(this.active == false){return;}
+        super.preUpdate(time, delta);
+        this.y -= this.speed;
     }
 }
 
 //================================================================================
 
-class Enemy1 {
+class Enemy1 extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
-        this.sprite = scene.physics.add.image(x, y, 'enemy1');
-        this.sprite.gameObject = this;
+        super(scene, x, y);
+        this.setTexture('enemy1');
+        this.setPosition(x, y);
+
+        this.gameObject = this;
         this.deltaX = 3;
         this.deltaY = 3;
     }
@@ -137,32 +137,28 @@ class Enemy1 {
         }
     }
 
-    destroy() {
-        this.sprite.destroy(true);
-    }
-
     moveLeft() {
-        if (this.sprite.x > 0) {
-            this.sprite.x -= this.deltaX;
+        if (this.x > 0) {
+            this.x -= this.deltaX;
         }
     }
 
     moveRight() {
-        if (this.sprite.x < SCREEN_WIDTH) {
-            this.sprite.x += this.deltaX;
+        if (this.x < SCREEN_WIDTH) {
+            this.x += this.deltaX;
         }
     }
 
     moveUp() {
-        if (this.sprite.y > 0) {
-            this.sprite.y -= this.deltaY;
+        if (this.y > 0) {
+            this.y -= this.deltaY;
         }
     }
 
     moveDown() {
 
-        if (this.sprite.y < SCREEN_HEIGHT) {
-            this.sprite.y += this.deltaY;
+        if (this.y < SCREEN_HEIGHT) {
+            this.y += this.deltaY;
         }
     }
 }
@@ -188,13 +184,15 @@ class Scene1 extends Phaser.Scene {
         this.enemies = this.physics.add.group();
         this.enemies2 = new Array();
 
+
         let k = 0;
         for (k = 0; k < 21; k++) {
             let x = Math.random() * 800;
             let y = Math.random() * 400;
 
             this.enemy = new Enemy1(this, x, y);
-            this.enemies.add(this.enemy.sprite);
+            this.add.existing(this.enemy);
+            this.enemies.add(this.enemy);
             this.enemies2.push(this.enemy);
         }
 
@@ -228,8 +226,6 @@ class Scene1 extends Phaser.Scene {
             let enemy = this.enemies2[j];
             enemy.update();
         }
-
-
     }
 }
 
