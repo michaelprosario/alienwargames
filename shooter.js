@@ -94,6 +94,7 @@ class ShipLaser extends Phaser.GameObjects.Sprite {
         this.setPosition(x, y);
         this.speed = 10;
         this.scene = scene;
+        scene.physics.world.enable(this);
         scene.physics.add.collider(this, scene.enemies, this.handleHit, null, this);
     }
 
@@ -116,6 +117,7 @@ class Enemy1 extends Phaser.GameObjects.Sprite {
         super(scene, x, y);
         this.setTexture('enemy1');
         this.setPosition(x, y);
+        scene.physics.world.enable(this);
 
         this.gameObject = this;
         this.deltaX = 3;
