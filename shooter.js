@@ -118,7 +118,7 @@ class MovingStar extends Phaser.GameObjects.Sprite {
         super(scene, x, y);
         this.setTexture('star3');
         this.setPosition(x, y);
-        this.speed = 5;
+        this.speed = 3;
         this.scene = scene;
     }
 
@@ -233,6 +233,10 @@ class Scene1 extends Phaser.Scene {
     }
 
     update() {
+        if (this.cursors.space.isDown) {
+            this.myShip.fireLasers();
+        }
+        
         if (this.cursors.left.isDown) {
             this.myShip.moveLeft();
         }
@@ -247,10 +251,6 @@ class Scene1 extends Phaser.Scene {
 
         if (this.cursors.down.isDown) {
             this.myShip.moveDown();
-        }
-
-        if (this.cursors.space.isDown) {
-            this.myShip.fireLasers();
         }
 
         this.myShip.update();
