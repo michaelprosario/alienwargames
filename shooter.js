@@ -112,6 +112,29 @@ class ShipLaser extends Phaser.GameObjects.Sprite {
 
 //================================================================================
 
+class MovingStar extends Phaser.GameObjects.Sprite {
+
+    constructor(scene, x, y) {
+        super(scene, x, y);
+        this.setTexture('star3');
+        this.setPosition(x, y);
+        this.speed = 5;
+        this.scene = scene;
+    }
+
+    preUpdate(time, delta) {
+        super.preUpdate(time, delta);
+        this.y = this.y + this.speed;
+ 
+        if(this.y >= 600)
+        {
+            this.y = 0;
+        }
+    }
+}
+
+//================================================================================
+
 class Enemy1 extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y);
@@ -174,15 +197,24 @@ class Scene1 extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip1_orange.png');
+        this.load.image('ship', 'assets/SpaceShooterRedux/PNG/playerShip2_green.png');
         this.load.image('laser', 'assets/SpaceShooterRedux/PNG/Lasers/laserBlue01.png');
         this.load.image('enemy1', 'assets/SpaceShooterRedux/PNG/Enemies/enemyBlack3.png');
+        this.load.image('star3', 'assets/SpaceShooterRedux/PNG/Effects/star3.png');
     }
 
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.myShip = new Ship(this, 400, 500);
+        this.myShip = new Ship(this, 400, 500);        
         this.add.existing(this.myShip);
+
+        var star;
+        var s;
+        for(s=0; s< 11; s++) {
+            star = new MovingStar(this, 800 * Math.random() , 600 * Math.random());
+            this.add.existing(star);
+        }
+
         this.enemies = this.physics.add.group();
         this.enemies2 = new Array();
 
