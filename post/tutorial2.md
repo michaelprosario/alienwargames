@@ -86,7 +86,7 @@ We have to make one more edit to our Ship class to make the lasers function prop
 	}
 ```
 
-In the scene one class, we need to add one more detail.   The laser should fire when the user presses the space bar.  Let's edit the update method to fire the lasers.  
+In the scene one class, we need to add one more detail.  The laser should fire when the user presses the space bar.  Let's edit the update method to fire the lasers.  
 
 ```javascript
     update() {
